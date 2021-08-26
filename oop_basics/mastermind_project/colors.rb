@@ -31,6 +31,10 @@ class String
         color(31)
     end
 
+    def green
+        color(32)
+    end
+
     def grey
         color(37)
     end

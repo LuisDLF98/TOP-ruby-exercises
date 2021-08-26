@@ -34,15 +34,19 @@ class Mastermind
         return false
     end
 
+    # Generate a random code for the user to guess
     def generate_code 
-        return "rgby"
+        return (0..3).map { ['r','b','g','y','m','c'].to_a[rand(6)] }.join
     end
 
+    # Generate a guess
+    # TODO: Make the computer do educated guesses
     def generate_guess
-        return "rgmc"
+        return (0..3).map { ['r','b','g','y','m','c'].to_a[rand(6)] }.join
     end
 
-    def valid_code(code) 
+    # Check if a code if valid
+    def valid_code?(code) 
         return code.length == 4 && /^[rgbymc]+$/.match(code)
     end
 
@@ -52,12 +56,12 @@ class Mastermind
         @code = generate_code
 
         loop do
-            puts "Guess the code"
+            puts "Guess the code:"
             guess = gets.chomp
 
             # Loop until the user types in a valid guess
-            until self.valid_code(guess) do
-                puts "Guess the code"
+            until self.valid_code?(guess) do
+                puts "Guess the code:"
                 guess = gets.chomp.downcase
             end
 
@@ -74,12 +78,12 @@ class Mastermind
     # Runs the session where the user is the creator, so the computer
     # guesses the user's code
     def creator_session
-        puts "Type in a code"
+        puts "Type in a code:"
         @code = gets.chomp.downcase
 
         # Loop until the user enters a valid code
-        until valid_code(@code) do
-            puts "Type in a code"
+        until valid_code?(@code) do
+            puts "Type in a code:"
             @code = gets.chomp.downcase
         end
 
@@ -97,7 +101,7 @@ class Mastermind
     
     # Start the game
     def start
-        puts "Guesser or Creator?"
+        puts "Guesser or Creator? (Type in guesser or creator)"
         type = gets.chomp.downcase
 
         # Loop until the user chooses a valid type
@@ -105,6 +109,16 @@ class Mastermind
             puts "Guesser or Creator?"
             type = gets.chomp.downcase
         end
+
+        # Notice to the user on how the codes are formatted and how the game works
+        puts "The game accepts 6 colors: r (red), g (green), b (blue), y (yellow), m (magenta), and c (cyan).".green
+        puts "The code should be formatted without spaces (Ex. rgby).\n".green
+        puts "After you guess, 4 blocks will appear visually showing the layout of your guess.".green
+        puts "To the right of these blocks there are 0-4 little pegs shown as an \"O\".".green
+        puts "These pegs give hints to the correctness of your guess.".green
+        puts "A red peg shows that one of your blocks are correct in color and position.".green
+        puts "A grey peg only shows a correct color.".green
+        puts "You only have 12 tries. Good luck!\n".green
 
 
         if type == "guesser"
