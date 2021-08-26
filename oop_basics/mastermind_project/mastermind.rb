@@ -3,6 +3,7 @@ class Mastermind
         @player_type = type
         @turns = 12
         @code = ""
+        @S = []
         @pegs = {
             "r" => "    ".bg_red,
             "g" => "    ".bg_green,
@@ -16,7 +17,7 @@ class Mastermind
         }
     end
 
-    # Check if the guesser guessed correctly
+    # Check if the guesser guessed correctly.
     def is_right?(key_pegs)
         if key_pegs.all? { |peg| peg == "kr" }
             puts "Guesser won!"
@@ -25,7 +26,7 @@ class Mastermind
         return false
     end
 
-    # Check if the guesser used all of their turns
+    # Check if the guesser used all of their turns.
     def no_turns?
         if @turns == 0
             puts "Creator won!"
@@ -34,15 +35,22 @@ class Mastermind
         return false
     end
 
-    # Generate a random code for the user to guess
+    # Generate a random code for the user to guess.
     def generate_code 
         return (0..3).map { ['r','b','g','y','m','c'].to_a[rand(6)] }.join
     end
 
-    # Generate a guess
-    # TODO: Make the computer do educated guesses
-    def generate_guess
-        return (0..3).map { ['r','b','g','y','m','c'].to_a[rand(6)] }.join
+    # Generate a guess.
+    # Right now, the method filters out codes that would produce the same result or with less red pegs,
+    # then it picks from the remaining possibilities.
+    def generate_guess(key_pegs)
+        if @turns == 12
+            return "rrbb"
+        else
+            puts @S.length
+            @S = @S.reject { |code| key_pegs == get_key_pegs(code) || get_key_pegs(code).count("kr") < key_pegs.count("kr") }
+            return (0..3).map { @S[rand(@S.length)] }.join
+        end
     end
 
     # Check if a code if valid
@@ -51,7 +59,7 @@ class Mastermind
     end
 
     # Runs the session of the where the user is the guesser, so they input 
-    # their guesses and try to get the guess correct within 12 turns
+    # their guesses and try to get the guess correct within 12 turns.
     def guesser_session
         @code = generate_code
 
@@ -59,7 +67,7 @@ class Mastermind
             puts "Guess the code:"
             guess = gets.chomp
 
-            # Loop until the user types in a valid guess
+            # Loop until the user types in a valid guess.
             until self.valid_code?(guess) do
                 puts "Guess the code:"
                 guess = gets.chomp.downcase
@@ -76,19 +84,22 @@ class Mastermind
     end
 
     # Runs the session where the user is the creator, so the computer
-    # guesses the user's code
+    # guesses the user's code.
     def creator_session
+        @S = ['r','g', 'b','y','m','c'].to_a.repeated_permutation(4).to_a # Generate all possible code combinations
+
         puts "Type in a code:"
         @code = gets.chomp.downcase
 
-        # Loop until the user enters a valid code
+        # Loop until the user enters a valid code.
         until valid_code?(@code) do
             puts "Type in a code:"
             @code = gets.chomp.downcase
         end
 
+        key_pegs = []
         loop do
-            guess = generate_guess
+            guess = self.generate_guess(key_pegs)
             guess_list = guess.split("")
             @turns -= 1
 
@@ -99,18 +110,18 @@ class Mastermind
         end
     end
     
-    # Start the game
+    # Start the game.
     def start
         puts "Guesser or Creator? (Type in guesser or creator)"
         type = gets.chomp.downcase
 
-        # Loop until the user chooses a valid type
+        # Loop until the user chooses a valid type.
         until type == "guesser" || type == "creator" do
             puts "Guesser or Creator?"
             type = gets.chomp.downcase
         end
 
-        # Notice to the user on how the codes are formatted and how the game works
+        # Notice to the user on how the codes are formatted and how the game works.
         puts "The game accepts 6 colors: r (red), g (green), b (blue), y (yellow), m (magenta), and c (cyan).".green
         puts "The code should be formatted without spaces (Ex. rgby).\n".green
         puts "After you guess, 4 blocks will appear visually showing the layout of your guess.".green
@@ -128,15 +139,14 @@ class Mastermind
         end
     end
 
-    # Get key_pegs based off of the guess
-    # A red key peg (kr) corresponds to a code peg that was correct in color and position
-    # A grey key peg (kg) corresponds to a code peg that was correct in only color
+    # Get key_pegs based off of the guess.
+    # A red key peg (kr) corresponds to a code peg that was correct in color and position.
+    # A grey key peg (kg) corresponds to a code peg that was correct in only color.
     def get_key_pegs(guess_list)
         key_pegs = [" ", " ", " ", " "]
         checked_pegs = []
         peg_idx = 0
 
-        # TODO: Add a check so the amount of pegs given corresponds to the same amount of duplicates in the code
         guess_list.each_with_index do |code_peg, index|
             if @code.include?(code_peg) && checked_pegs.count(code_peg) < @code.count(code_peg)
                 if (@code[index] == code_peg)
@@ -144,6 +154,7 @@ class Mastermind
                 else
                     key_pegs[peg_idx] = "kg"
                 end
+
                 checked_pegs.push(code_peg)
                 peg_idx += 1
             end
