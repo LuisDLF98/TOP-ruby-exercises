@@ -44,6 +44,7 @@ class Tictactoe
         @positions.has_key?(position) && @grid[@positions[position][0]][@positions[position][1]].eql?(" ")
     end
 
+    # Tell the users that a player won before exiting the game
     def player_won
         self.print
         puts "Player #{@current_player} won!"
@@ -81,6 +82,7 @@ class Tictactoe
         end
     end
 
+    # Check if the players tied the game
     def is_tie?
         if @grid.all? { |row| row.none? { |space| space == " " } }
             self.print
@@ -108,6 +110,7 @@ class Tictactoe
             take_turn(input)
             break if self.is_win? || self.is_tie?
 
+            # Switch players
             @current_symbol = !@current_symbol
             @current_player = (@current_player % 2) + 1
         end
@@ -123,8 +126,8 @@ until input.upcase == "X" || input.upcase == "O" do
     input = gets.chomp
 end
 
-isX = false
-isX = true if input.upcase.eql?("O")
+is_o = false
+is_o = true if input.upcase.eql?("O")
 
-game = Tictactoe.new(isX)
+game = Tictactoe.new(is_o)
 game.start
