@@ -133,16 +133,18 @@ class Mastermind
     # A grey key peg (kg) corresponds to a code peg that was correct in only color
     def get_key_pegs(guess_list)
         key_pegs = [" ", " ", " ", " "]
+        checked_pegs = []
         peg_idx = 0
 
         # TODO: Add a check so the amount of pegs given corresponds to the same amount of duplicates in the code
         guess_list.each_with_index do |code_peg, index|
-            if @code.include?(code_peg)
+            if @code.include?(code_peg) && checked_pegs.count(code_peg) < @code.count(code_peg)
                 if (@code[index] == code_peg)
                     key_pegs[peg_idx] = "kr"
                 else
                     key_pegs[peg_idx] = "kg"
                 end
+                checked_pegs.push(code_peg)
                 peg_idx += 1
             end
         end
