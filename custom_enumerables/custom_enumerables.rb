@@ -22,6 +22,16 @@ module Enumerable
 
         array
     end
+
+    def my_all?
+        for i in (0...self.length) do 
+            unless yield(self[i])
+                return false
+            end
+        end
+
+        true
+    end
 end
 
 
@@ -39,3 +49,9 @@ numbers.each_with_index { |item, index| puts "numbers[#{index}] = #{item}" }
 puts "my_select vs. select"
 puts numbers.my_select { |item| item < 4 }
 puts numbers.select { |item| item < 4 }
+
+puts "my_all? vs. all?"
+puts numbers.my_all? { |item| item < 4 }
+puts numbers.all? { |item| item < 4 }
+puts numbers.my_all? { |item| item < 6 }
+puts numbers.all? { |item| item < 6 }
