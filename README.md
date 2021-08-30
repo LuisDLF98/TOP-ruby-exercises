@@ -33,3 +33,11 @@ Which should print a few lines about not finding any examples. This is ok and me
 ## Usage
 
 Each directory contains a read me with instructions for the exercises within them.
+
+## Suggested Readings and Courses
+Introduction to Algorithms :Thomas H. Cormen, Charles E. Lesierson,... ISBN: 9780262033848
+Algorithm Design: Jon Kleinber, Eva Tardos...ISBN: 9780321295354
+The Arat of Computer Programming, Volumes 1-4A Boxed set, Donald Knuth...ISBN: 9780321751041
+MIT OpenCourseWare: Introduction to Algorithms
+MIT OpenCourseWare: Introduction to Algorithms (SMA 5503)
+Coursera
