@@ -1,8 +1,11 @@
+# Sorts a list by swapping 2 numbers if the number at the lower index
+# is greater then the one at the higher index. 
 def bubble_sort(list)
 
     loop do
         count = 0
 
+        # Go through the list and swap values if needed
         list.each_index do |idx|
             if idx + 1 < list.length && list[idx] > list[idx + 1]
                 count += 1
@@ -12,6 +15,7 @@ def bubble_sort(list)
             end
         end
 
+        # Loop until there no more values to swap (list is sorted)
         break if count == 0
     end
 
