@@ -74,6 +74,14 @@ module Enumerable
 
         array
     end
+
+    def my_inject(result = 0)
+        for i in (0...self.length) do 
+            result = yield(result, self[i])
+        end
+
+        result
+    end
 end
 
 
@@ -89,8 +97,8 @@ numbers.my_each_with_index { |item, index| puts "numbers[#{index}] = #{item}" }
 numbers.each_with_index { |item, index| puts "numbers[#{index}] = #{item}" }
 
 puts "my_select vs. select"
-puts numbers.my_select { |item| item < 4 }
-puts numbers.select { |item| item < 4 }
+p numbers.my_select { |item| item < 4 }
+p numbers.select { |item| item < 4 }
 
 puts "my_all? vs. all?"
 puts numbers.my_all? { |item| item < 4 }
@@ -115,5 +123,24 @@ puts numbers.my_count { |item| item < 4 }
 puts numbers.count { |item| item < 4 }
 
 puts "my_map vs. map"
-puts numbers.my_map { |item| item += 1 }
-puts numbers.map { |item| item += 1 }
+p numbers.my_map { |item| item += 1 }
+p numbers.map { |item| item += 1 }
+
+puts "my_inject vs. inject"
+puts numbers.my_inject { |sum, number|
+    sum += number
+    sum
+}
+puts numbers.reduce { |sum, number|
+    sum += number
+    sum
+}
+p numbers.my_inject(Hash.new(0)) { |sum, number|
+    sum[number] = number ** 2
+    sum
+}
+p numbers.inject(Hash.new(0)) { |sum, number|
+    sum[number] = number ** 2
+    sum
+}
+
