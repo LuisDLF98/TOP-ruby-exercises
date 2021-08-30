@@ -52,6 +52,18 @@ module Enumerable
 
         true
     end
+
+    def my_count
+        count = 0
+
+        for i in (0...self.length) do 
+            if yield(self[i])
+                count += 1
+            end
+        end
+
+        count
+    end
 end
 
 
@@ -87,3 +99,7 @@ puts numbers.my_none? { |item| item < 4 }
 puts numbers.none? { |item| item < 4 }
 puts numbers.my_none? { |item| item > 6 }
 puts numbers.none? { |item| item > 6 }
+
+puts "my_count vs. count"
+puts numbers.my_count { |item| item < 4 }
+puts numbers.count { |item| item < 4 }
