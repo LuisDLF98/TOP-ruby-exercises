@@ -64,6 +64,16 @@ module Enumerable
 
         count
     end
+
+    def my_map
+        array = []
+
+        for i in (0...self.length) do 
+            array.push(yield(self[i]))
+        end
+
+        array
+    end
 end
 
 
@@ -103,3 +113,7 @@ puts numbers.none? { |item| item > 6 }
 puts "my_count vs. count"
 puts numbers.my_count { |item| item < 4 }
 puts numbers.count { |item| item < 4 }
+
+puts "my_map vs. map"
+puts numbers.my_map { |item| item += 1 }
+puts numbers.map { |item| item += 1 }
