@@ -65,21 +65,29 @@ module Enumerable
         count
     end
 
-    # def my_map
-    #     array = []
-
-    #     for i in (0...self.length) do 
-    #         array.push(yield(self[i]))
-    #     end
-
-    #     array
-    # end
-
-    def my_map(block)
+    def my_map
         array = []
 
         for i in (0...self.length) do 
-            array.push(block.call(self[i]))
+            array.push(yield(self[i]))
+        end
+
+        array
+    end
+
+    def my_map(*args)
+        array = []
+
+        case args.size
+        when 0
+            for i in (0...self.length) do 
+                array.push(yield(self[i]))
+            end
+
+        when 1
+            for i in (0...self.length) do 
+                array.push(args[0].call(self[i]))
+            end
         end
 
         array
@@ -139,8 +147,9 @@ puts "my_count vs. count"
 puts numbers.my_count { |item| item < 4 }
 puts numbers.count { |item| item < 4 }
 
-puts "my_map vs. map"
+puts "my_map (proc) vs. my_map vs. map"
 p numbers.my_map(Proc.new { |item| item += 1 })
+p numbers.my_map { |item| item += 1 }
 p numbers.map { |item| item += 1 }
 
 puts "my_inject vs. inject"
