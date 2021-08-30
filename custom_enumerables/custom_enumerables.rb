@@ -10,6 +10,18 @@ module Enumerable
             yield(self[i], i)
         end
     end
+
+    def my_select
+        array = []
+
+        for i in (0...self.length) do 
+            if yield(self[i])
+                array.push(self[i])
+            end
+        end
+
+        array
+    end
 end
 
 
@@ -23,3 +35,7 @@ numbers.each { |item| puts item }
 puts "my_each_with_index vs. each_with_index"
 numbers.my_each_with_index { |item, index| puts "numbers[#{index}] = #{item}" }
 numbers.each_with_index { |item, index| puts "numbers[#{index}] = #{item}" }
+
+puts "my_select vs. select"
+puts numbers.my_select { |item| item < 4 }
+puts numbers.select { |item| item < 4 }
