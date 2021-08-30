@@ -5,6 +5,7 @@ class Tree
         @root = nil
     end
 
+    # Builds the tree from a given array
     def build_tree(array, left, right)
         array.sort!.uniq!
 
@@ -22,6 +23,22 @@ class Tree
         return root
     end
 
+    def insert(value, node = @root)
+        if node.nil?
+            node = Node.new(value)
+            return node
+        end
+
+        if value > node.value
+            node.right_node = insert(value, node.right_node)
+        elsif value < node.value
+            node.left_node = insert(value, node.left_node)
+        end
+
+        return node
+    end
+
+    # Print method given from The Odin Project to visualize the tree
     def print(node = @root, prefix = '', is_left = true)
         if node.nil?
             return

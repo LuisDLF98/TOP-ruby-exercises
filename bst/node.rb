@@ -6,8 +6,8 @@ class Node
         @value <=> other_node.value
     end
 
-    def initialize(data = nil, left_node = nil, right_node = nil)
-        @value = data
+    def initialize(value = nil, left_node = nil, right_node = nil)
+        @value = value
         @left_node = left_node
         @right_node = right_node
     end
