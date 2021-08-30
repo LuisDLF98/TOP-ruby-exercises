@@ -32,6 +32,26 @@ module Enumerable
 
         true
     end
+
+    def my_any?
+        for i in (0...self.length) do 
+            if yield(self[i])
+                return true
+            end
+        end
+
+        false
+    end
+
+    def my_none?
+        for i in (0...self.length) do 
+            if yield(self[i])
+                return false
+            end
+        end
+
+        true
+    end
 end
 
 
@@ -55,3 +75,15 @@ puts numbers.my_all? { |item| item < 4 }
 puts numbers.all? { |item| item < 4 }
 puts numbers.my_all? { |item| item < 6 }
 puts numbers.all? { |item| item < 6 }
+
+puts "my_any? vs. any?"
+puts numbers.my_any? { |item| item < 4 }
+puts numbers.any? { |item| item < 4 }
+puts numbers.my_any? { |item| item > 6 }
+puts numbers.any? { |item| item > 6 }
+
+puts "my_none? vs. none?"
+puts numbers.my_none? { |item| item < 4 }
+puts numbers.none? { |item| item < 4 }
+puts numbers.my_none? { |item| item > 6 }
+puts numbers.none? { |item| item > 6 }
