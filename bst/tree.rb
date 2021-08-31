@@ -182,6 +182,25 @@ class Tree
         return count
     end
 
+    # Returns the number of edges between the given node and the tree's root node
+    def depth(node, current = @root, count = 0)
+        if current.eql?(node)
+            return count
+        elsif current.nil?
+            return 0
+        else
+            count += 1
+            count = [depth(node, current.left_node, count), depth(node, current.right_node, count)].max
+            return count
+        end
+    end
+
+    # Rebuilds the tree using build_tree()
+    def rebalance
+        order = self.level_order
+        return build_tree(order, 0, order.length)
+    end
+
     # Print method given from The Odin Project to visualize the tree
     def print(node = @root, prefix = '', is_left = true)
         if node.nil?

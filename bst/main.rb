@@ -21,3 +21,10 @@ puts "Postorder: #{tree.post_order}"
 puts "Preorder: #{tree.pre_order}"
 
 p tree.height(tree.find(1))
+p tree.depth(tree.find(2))
+
+puts "Tree before rebalance:"
+tree.print
+puts "Tree after rebalance:"
+tree.rebalance
+tree.print
