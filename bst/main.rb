@@ -30,7 +30,13 @@ puts "\nHeight at node value 1: #{tree.height(tree.find(1))}"
 puts "Depth of node value 2: #{tree.depth(tree.find(2))}\n"
 
 puts "\nTree before rebalance:"
+tree.insert(3)
 tree.print
+puts "Is the tree balance?"
+puts "Answer: #{tree.balanced?}"
+
 puts "\nTree after rebalance:"
 tree.rebalance
 tree.print
+puts "Is the tree balance?"
+puts "Answer: #{tree.balanced?}"

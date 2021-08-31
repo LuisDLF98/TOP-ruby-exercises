@@ -201,6 +201,20 @@ class Tree
         return build_tree(order, 0, order.length)
     end
 
+    # Checks if the tree is balanced.
+    # The tree is balanced if the height from the root's left and right
+    # children have a difference of no greater than 1.
+    def balanced?
+        left = height(@root.left_node)
+        right = height(@root.right_node)
+
+        if (left - right).abs <= 1
+            return true
+        end
+
+        return false
+    end
+
     # Print method given from The Odin Project to visualize the tree
     def print(node = @root, prefix = '', is_left = true)
         if node.nil?
