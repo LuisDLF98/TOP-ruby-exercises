@@ -5,10 +5,19 @@ class Tree
         @root = nil
     end
 
-    # Builds the tree from a given array.
-    def build_tree(array, left, right)
+    # Processes the array and its dimensions before calling build_driver
+    # to begin building the tree.
+    def build_tree(array)
         array.sort!.uniq!
+        left = 0
+        right = array.length
 
+        return build_driver(array, left, right)
+    end
+
+    # Helper function for build_tree.
+    # Builds the tree from a given array.
+    def build_driver(array, left, right)
         if right - left <= 0
             return 
         end
@@ -16,8 +25,8 @@ class Tree
         middle = left + (right - left) / 2
         root = Node.new(array[middle])
 
-        root.left_node = build_tree(array, left, middle)
-        root.right_node = build_tree(array, middle + 1, right)
+        root.left_node = build_driver(array, left, middle)
+        root.right_node = build_driver(array, middle + 1, right)
 
         @root = root
         return root
@@ -198,7 +207,7 @@ class Tree
     # Rebuilds the tree using build_tree()
     def rebalance
         order = self.level_order
-        return build_tree(order, 0, order.length)
+        return build_tree(order)
     end
 
     # Checks if the tree is balanced.
