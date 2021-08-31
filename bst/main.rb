@@ -19,3 +19,5 @@ puts "Level Order: #{tree.level_order}"
 puts "Inorder: #{tree.in_order}"
 puts "Postorder: #{tree.post_order}"
 puts "Preorder: #{tree.pre_order}"
+
+p tree.height(tree.find(1))

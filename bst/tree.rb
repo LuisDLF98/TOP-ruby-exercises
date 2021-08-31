@@ -170,6 +170,18 @@ class Tree
         return explored
     end
 
+    # Returns the longest number of edges from one node to a leaf
+    def height(node, count = 0)
+        if node.nil?
+            return count - 1 # Subtract 1 because the current method counts the number of nodes, not edges.
+        end
+        
+        count += 1
+        count = [height(node.left_node, count), height(node.right_node, count)].max
+
+        return count
+    end
+
     # Print method given from The Odin Project to visualize the tree
     def print(node = @root, prefix = '', is_left = true)
         if node.nil?
