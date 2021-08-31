@@ -5,7 +5,7 @@ class Tree
         @root = nil
     end
 
-    # Builds the tree from a given array
+    # Builds the tree from a given array.
     def build_tree(array, left, right)
         array.sort!.uniq!
 
@@ -23,10 +23,10 @@ class Tree
         return root
     end
 
+    # Adds a value to the tree.
     def insert(value, node = @root)
         if node.nil?
-            node = Node.new(value)
-            return node
+            return Node.new(value)
         end
 
         if value > node.value
@@ -36,6 +36,138 @@ class Tree
         end
 
         return node
+    end
+
+    # Finds the child with the lowest value.
+    def min_node(node)
+        current = node
+
+        if current.nil?
+            return current
+        end
+
+        until current.left_node.nil?
+            current = current.left_node
+        end
+
+        return current
+    end
+
+    # Deletes the specified value from the tree.
+    def delete(value, node = @root)
+        if node.nil?
+            return node 
+        end
+
+        if value < node.value
+            node.left_node = delete(value, node.left_node)
+        elsif value > node.value
+            node.right_node = delete(value, node.right_node)
+        else
+            if  node.left_node.nil? && node.right_node.nil?
+                return nil
+            elsif node.left_node.nil?
+                return node.right_node
+            elsif node.right_node.nil?
+                return node.left_node
+            end
+
+            # Switches the current node's value with the child with the lowest value greater than
+            # the current node, then delete the child.
+            temp = min_node(node.right_node)
+            node.value = temp.value
+            node.right_node = delete(temp.value, node.right_node)
+        end
+
+        return node
+    end
+
+    # Return the node containing the given value.
+    def find(value, node = @root)
+        if node.nil?
+            return nil
+        end
+
+        if value < node.value
+            return find(value, node.left_node)
+        elsif value > node.value
+            return find(value, node.right_node)
+        else
+            return node
+        end
+    end
+
+    # Returns a list of the tree's values ordered in the order that they
+    # were explored during a BFS.
+    def level_order
+        explored =  []
+        queue = Queue.new
+        explored.push(@root.value)
+        queue << @root
+
+        until queue.empty? do
+            temp = queue.pop
+
+            unless temp.left_node.nil? || explored.include?(temp.left_node.value)
+                explored.push(temp.left_node.value)
+                queue << temp.left_node
+            end
+
+            unless temp.right_node.nil? || explored.include?(temp.right_node.value)
+                explored.push(temp.right_node.value)
+                queue << temp.right_node
+            end
+        end
+
+        return explored
+    end
+
+    # Inorder DFS (Searches [left][root][right]) that returns an array
+    # ordered in the order that the values were explored during the DFS.
+    def in_order(node = @root, explored = [])
+        unless node.left_node.nil?
+            in_order(node.left_node, explored)
+        end
+
+        explored.push(node.value)
+
+        unless node.right_node.nil?
+            in_order(node.right_node, explored)
+        end
+
+        return explored
+    end
+
+    # Postorder DFS (Searches [left][right][root]) that returns an array
+    # ordered in the order that the values were explored during the DFS.
+    def post_order(node = @root, explored = [])
+        unless node.left_node.nil?
+            post_order(node.left_node, explored)
+        end
+
+        unless node.right_node.nil?
+            post_order(node.right_node, explored)
+        end
+
+        explored.push(node.value)
+
+        return explored
+    end
+
+    # Preorder DFS (Searches [root][left][right]) that returns an array
+    # ordered in the order that the values were explored during the DFS.
+    def pre_order(node = @root, explored = [])
+        explored.push(node.value)
+
+        unless node.left_node.nil?
+            post_order(node.left_node, explored)
+        end
+
+        unless node.right_node.nil?
+            post_order(node.right_node, explored)
+        end
+
+        return explored
     end
 
     # Print method given from The Odin Project to visualize the tree
